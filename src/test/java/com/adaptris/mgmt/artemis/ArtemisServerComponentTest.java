@@ -17,6 +17,7 @@
 package com.adaptris.mgmt.artemis;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.junit.Assert.fail;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -27,7 +28,6 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.junit.Test;
 
 import com.adaptris.core.BaseCase;
-import com.adaptris.mgmt.artemis.ArtemisServerComponent;
 
 public class ArtemisServerComponentTest {
 
@@ -59,7 +59,7 @@ public class ArtemisServerComponentTest {
   @Test
   public void testDefaultStart() throws Exception {
     if (!skipTests()) {
-      ArtemisServerComponent comp = new ArtemisServerComponent();
+      ArtemisServerComponent comp = new ArtemisServerComponent();      
       comp.init(new Properties());
       comp.setClassLoader(Thread.currentThread().getContextClassLoader());
       try {
@@ -72,6 +72,7 @@ public class ArtemisServerComponentTest {
       }
       finally {
         comp.stop();
+        comp.destroy();
       }
     }
   }
@@ -91,7 +92,24 @@ public class ArtemisServerComponentTest {
       }
       finally {
         comp.stop();
+        comp.destroy();
       }
+    }
+  }
+  
+  @Test
+  public void testWaitForStartTimesOut() throws Exception {
+    if (!skipTests()) {
+      ArtemisServerComponent comp = new ArtemisServerComponent();
+      try {
+        comp.waitForStart(50);
+        fail("Artemis server not initialized, so should fail after the 50 milliseconds of timeout.");
+      } catch (TimeoutException ex) {
+        // expected.
+      } finally {
+        comp.stop();
+      }
+      
     }
   }
 

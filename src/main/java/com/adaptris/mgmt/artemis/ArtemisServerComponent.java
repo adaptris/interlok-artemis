@@ -21,8 +21,6 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.management.MalformedObjectNameException;
-
 import org.apache.activemq.artemis.core.config.Configuration;
 import org.apache.activemq.artemis.core.config.impl.ConfigurationImpl;
 import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
@@ -164,10 +162,6 @@ public class ArtemisServerComponent implements ManagementComponent {
     if (totalWaitTime > timeout) {
       throw new TimeoutException("Timeout Expired");
     }
-  }
-
-  String brokerName() throws MalformedObjectNameException {
-    return embeddedArtemis.getActiveMQServer().describe();
   }
 
   private boolean brokerStarted() {
