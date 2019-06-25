@@ -22,8 +22,8 @@ ext {
   componentName='Interlok/Apache Artemis Broker'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.7.0"
-  log4j2Version="2.8.1"
+  artemisVersion="2.9.0"
+  log4j2Version="2.11.2"
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -170,9 +170,9 @@ publishing {
       pom.withXml {
         asNode().appendNode("name", componentName)
         asNode().appendNode("description", "Embedded Apache Artemis management component")
-        asNode().appendNode("url", "http://interlok.adaptris.net/interlok-docs/adapter-bootstrap.html#activemq-component")
+        asNode().appendNode("url", "http://interlok.adaptris.net/interlok-docs/adapter-bootstrap.html#apache-artemis")
         def properties = asNode().appendNode("properties")
-        properties.appendNode("target", "3.6.0+")
+        properties.appendNode("target", "3.9.0+")
         properties.appendNode("license", "false")
         properties.appendNode("tags", "artemis,management")
         properties.appendNode("externalUrl", "http://activemq.apache.org/")
@@ -210,5 +210,13 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
   }
 }
 
+
+task deleteGeneratedFiles(type: Delete) {
+  delete 'activemq-data'
+  delete 'data'
+}
+
+
 javadoc.dependsOn offlinePackageList
 check.dependsOn jacocoTestReport
+clean.dependsOn deleteGeneratedFiles
