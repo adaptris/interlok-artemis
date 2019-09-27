@@ -22,7 +22,7 @@ ext {
   componentName='Interlok/Apache Artemis Broker'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.10.0"
+  artemisVersion="2.10.1"
   log4j2Version="2.12.1"
 }
 
