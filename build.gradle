@@ -22,7 +22,7 @@ ext {
   componentName='Interlok/Apache Artemis Broker'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.9.0"
+  artemisVersion="2.10.1"
   log4j2Version="2.12.1"
 }
 
@@ -175,7 +175,7 @@ publishing {
         properties.appendNode("target", "3.9.0+")
         properties.appendNode("license", "false")
         properties.appendNode("tags", "artemis,management")
-        properties.appendNode("externalUrl", "http://activemq.apache.org/")
+        properties.appendNode("externalUrl", "https://activemq.apache.org/components/artemis/")
       }
     }
   }
