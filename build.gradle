@@ -24,6 +24,7 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   artemisVersion="2.11.0"
   log4j2Version="2.13.0"
+  nettyVersion="4.1.44.Final"
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -88,6 +89,21 @@ dependencies {
   compile  ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
   compile  ("com.adaptris:interlok-common:$interlokCoreVersion") { changing= true}
   compile  ("org.apache.activemq:artemis-jms-server:$artemisVersion")
+  compile  ("org.apache.activemq:artemis-server:$artemisVersion") {
+    // 4.1.43.Final has a HTTP request smuggler vuln, so
+    // we exclude netty, and force the fixed version
+    // dependabot will sort us out...
+    exclude group: "io.netty"
+  }
+  implementation ("io.netty:netty-buffer:$nettyVersion")
+  implementation ("io.netty:netty-common:$nettyVersion")
+  implementation ("io.netty:netty-handler:$nettyVersion")
+  implementation ("io.netty:netty-transport:$nettyVersion")
+  implementation ("io.netty:netty-transport-native-epoll:$nettyVersion")
+  implementation ("io.netty:netty-transport-native-unix-common:$nettyVersion")
+  implementation ("io.netty:netty-transport-native-kqueue:$nettyVersion")
+  implementation ("io.netty:netty-codec:$nettyVersion")
+  implementation ("io.netty:netty-codec-http:$nettyVersion")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
