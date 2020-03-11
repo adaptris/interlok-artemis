@@ -7,8 +7,8 @@ plugins {
 }
 
 ext {
-  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.9-SNAPSHOT'
-  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.9-SNAPSHOT'
+  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.10-SNAPSHOT'
+  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.10-SNAPSHOT'
   nexusBaseUrl = project.hasProperty('nexusBaseUrl') ? project.getProperty('nexusBaseUrl') : 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -22,8 +22,9 @@ ext {
   componentName='Interlok/Apache Artemis Broker'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.10.1"
-  log4j2Version="2.12.1"
+  artemisVersion="2.11.0"
+  log4j2Version="2.13.0"
+  nettyVersion="4.1.45.Final"
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -88,10 +89,25 @@ dependencies {
   compile  ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
   compile  ("com.adaptris:interlok-common:$interlokCoreVersion") { changing= true}
   compile  ("org.apache.activemq:artemis-jms-server:$artemisVersion")
+  compile  ("org.apache.activemq:artemis-server:$artemisVersion") {
+    // 4.1.43.Final has a HTTP request smuggler vuln, so
+    // we exclude netty, and force the fixed version
+    // dependabot will sort us out...
+    exclude group: "io.netty"
+  }
+  implementation ("io.netty:netty-buffer:$nettyVersion")
+  implementation ("io.netty:netty-common:$nettyVersion")
+  implementation ("io.netty:netty-handler:$nettyVersion")
+  implementation ("io.netty:netty-transport:$nettyVersion")
+  implementation ("io.netty:netty-transport-native-epoll:$nettyVersion")
+  implementation ("io.netty:netty-transport-native-unix-common:$nettyVersion")
+  implementation ("io.netty:netty-transport-native-kqueue:$nettyVersion")
+  implementation ("io.netty:netty-codec:$nettyVersion")
+  implementation ("io.netty:netty-codec-http:$nettyVersion")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-  testCompile  ('junit:junit:4.12')
+  testCompile  ('junit:junit:4.13')
   testCompile  ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true}
   testCompile  ("org.apache.logging.log4j:log4j-core:$log4j2Version")
   testCompile  ("org.apache.logging.log4j:log4j-1.2-api:$log4j2Version")
