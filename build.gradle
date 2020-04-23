@@ -24,7 +24,7 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   artemisVersion="2.11.0"
   log4j2Version="2.13.1"
-  nettyVersion="4.1.48.Final"
+  nettyVersion="4.1.49.Final"
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
