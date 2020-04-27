@@ -99,6 +99,7 @@ dependencies {
     // we exclude netty, and force the fixed version
     // dependabot will sort us out...
     exclude group: "io.netty"
+    exclude group: "org.apache.commons", module: "commons-configuration2"
   }
   implementation ("io.netty:netty-buffer:$nettyVersion")
   implementation ("io.netty:netty-common:$nettyVersion")
@@ -109,6 +110,7 @@ dependencies {
   implementation ("io.netty:netty-transport-native-kqueue:$nettyVersion")
   implementation ("io.netty:netty-codec:$nettyVersion")
   implementation ("io.netty:netty-codec-http:$nettyVersion")
+  implementation ("org.apache.commons:commons-configuration2:2.7")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
