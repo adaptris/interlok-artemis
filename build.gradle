@@ -3,7 +3,7 @@ plugins {
   id 'maven'
   id 'maven-publish'
   id  "jacoco"
-  id 'com.github.spotbugs' version '3.0.0'
+  id 'com.github.spotbugs' version '4.0.5'
 }
 
 ext {
@@ -23,8 +23,8 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   artemisVersion="2.11.0"
-  log4j2Version="2.13.0"
-  nettyVersion="4.1.45.Final"
+  log4j2Version="2.13.2"
+  nettyVersion="4.1.49.Final"
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -79,6 +79,11 @@ configurations {
   all*.exclude group: 'net.sf.saxon', module: 'saxon'
   all*.exclude group: 'org.codehaus.woodstox'
   all*.exclude group: 'org.eclipse.jetty.orbit', module: 'javax.mail.glassfish'
+  // INTERLOK-3197 exclude old javax.mail
+  all*.exclude group: 'com.sun.mail', module: 'javax.mail'
+  all*.exclude group: 'javax.validation', module: 'validation-api'
+  all*.exclude group: 'javax.activation', module: 'activation'
+  all*.exclude group: 'javax.activation', module: 'javax.activation-api'
 }
 
 configurations.all {
@@ -94,6 +99,7 @@ dependencies {
     // we exclude netty, and force the fixed version
     // dependabot will sort us out...
     exclude group: "io.netty"
+    exclude group: "org.apache.commons", module: "commons-configuration2"
   }
   implementation ("io.netty:netty-buffer:$nettyVersion")
   implementation ("io.netty:netty-common:$nettyVersion")
@@ -104,6 +110,7 @@ dependencies {
   implementation ("io.netty:netty-transport-native-kqueue:$nettyVersion")
   implementation ("io.netty:netty-codec:$nettyVersion")
   implementation ("io.netty:netty-codec-http:$nettyVersion")
+  implementation ("org.apache.commons:commons-configuration2:2.7")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
@@ -222,25 +229,22 @@ publishing {
   }
 }
 
-spotbugs {
-  // showProgress = "true"
+spotbugsMain {
   effort = "max"
-  // Ignore failures?
-  // ignoreFailures = false
-
-  // We only care about "high priority" issues...
   reportLevel = "high"
-}
-
-// disable spotbugsTests which checks our test code..
-spotbugsTest.enabled = false
-
-tasks.withType(com.github.spotbugs.SpotBugsTask) {
   reports {
-    xml.enabled = false
-    html.enabled = true
+    xml {
+      enabled = false
+    }
+    html {
+      enabled = true
+    }
   }
 }
+
+  // disable spotbugsTests which checks our test code..
+spotbugsTest.enabled = false
+
 
 
 task deleteGeneratedFiles(type: Delete) {
