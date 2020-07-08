@@ -3,7 +3,8 @@ plugins {
   id 'maven'
   id 'maven-publish'
   id  "jacoco"
-  id 'com.github.spotbugs' version '4.0.5'
+  id 'com.github.spotbugs' version '4.2.3'
+  id 'org.owasp.dependencycheck' version '5.3.2.1'
 }
 
 ext {
@@ -22,9 +23,9 @@ ext {
   componentName='Interlok/Apache Artemis Broker'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.11.0"
-  log4j2Version="2.13.2"
-  nettyVersion="4.1.49.Final"
+  artemisVersion="2.12.0"
+  nettyVersion="4.1.50.Final"
+  slf4jVersion="1.7.30"
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -115,10 +116,13 @@ dependencies {
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
   testCompile  ('junit:junit:4.13')
-  testCompile  ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true}
-  testCompile  ("org.apache.logging.log4j:log4j-core:$log4j2Version")
-  testCompile  ("org.apache.logging.log4j:log4j-1.2-api:$log4j2Version")
-  testCompile  ("org.apache.logging.log4j:log4j-api:$log4j2Version")
+  testCompile "org.slf4j:slf4j-simple:$slf4jVersion"
+  // exclude any log4j dependencies so that we can just use slf4j simple.
+  // works around INTERLOk-3233
+  testCompile "com.adaptris:interlok-stubs:$interlokCoreVersion", {
+    changing= true
+    exclude group: "org.apache.logging.log4j"
+  }
   testCompile  ("org.mockito:mockito-all:1.10.19")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
@@ -241,7 +245,16 @@ spotbugsMain {
     }
   }
 }
-
+dependencyCheck  {
+  suppressionFiles= [ "https://raw.githubusercontent.com/adaptris/interlok/develop/gradle/owasp-exclude.xml" , "$rootDir/gradle/owasp-exclude.xml" ]
+  skipConfigurations = [ "antSql", "spotbugs", "umlDoclet", "offlineJavadocPackages", "javadoc", "jacocoAnt", "jacocoAgent", "spotbugsPlugins", "spotbugsSlf4j" ]
+  formats = [ "HTML", "JUNIT" ]
+  junitFailOnCVSS = 7.0
+  failBuildOnCVSS = 7.0
+  analyzers {
+    assemblyEnabled=false
+  }
+}
   // disable spotbugsTests which checks our test code..
 spotbugsTest.enabled = false
 
