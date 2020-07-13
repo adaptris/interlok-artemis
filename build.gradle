@@ -24,7 +24,7 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   artemisVersion="2.12.0"
-  nettyVersion="4.1.50.Final"
+  nettyVersion="4.1.51.Final"
   slf4jVersion="1.7.30"
 }
 
