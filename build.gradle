@@ -3,13 +3,13 @@ plugins {
   id 'maven'
   id 'maven-publish'
   id  "jacoco"
-  id 'com.github.spotbugs' version '4.2.3'
+  id 'com.github.spotbugs' version '4.5.0'
   id 'org.owasp.dependencycheck' version '5.3.2.1'
 }
 
 ext {
-  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.10-SNAPSHOT'
-  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.10-SNAPSHOT'
+  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.11-SNAPSHOT'
+  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.11-SNAPSHOT'
   nexusBaseUrl = project.hasProperty('nexusBaseUrl') ? project.getProperty('nexusBaseUrl') : 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -23,8 +23,8 @@ ext {
   componentName='Interlok/Apache Artemis Broker'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.12.0"
-  nettyVersion="4.1.50.Final"
+  artemisVersion="2.14.0"
+  nettyVersion="4.1.51.Final"
   slf4jVersion="1.7.30"
 }
 
@@ -123,7 +123,8 @@ dependencies {
     changing= true
     exclude group: "org.apache.logging.log4j"
   }
-  testCompile  ("org.mockito:mockito-all:1.10.19")
+  testCompile ("org.mockito:mockito-core:3.5.9")
+  testCompile ("org.mockito:mockito-inline:3.5.9")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
 
