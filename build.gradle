@@ -23,7 +23,7 @@ ext {
   componentName='Interlok/Apache Artemis Broker'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.14.0"
+  artemisVersion="2.15.0"
   nettyVersion="4.1.52.Final"
   slf4jVersion="1.7.30"
 }
