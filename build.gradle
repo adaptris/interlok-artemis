@@ -221,6 +221,7 @@ publishing {
         properties.appendNode("license", "false")
         properties.appendNode("tags", "artemis,management")
         properties.appendNode("externalUrl", "https://activemq.apache.org/components/artemis/")
+        properties.appendNode("repository", "https://github.com/adaptris/interlok-artemis")
       }
     }
   }
