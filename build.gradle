@@ -2,13 +2,13 @@ plugins {
   id 'java-library'
   id 'maven-publish'
   id  "jacoco"
-  id 'com.github.spotbugs' version '4.7.9'
-  id 'org.owasp.dependencycheck' version '6.5.0.1'
+  id 'com.github.spotbugs' version '5.0.5'
+  id 'org.owasp.dependencycheck' version '6.5.3'
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.3-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '4.3-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.4-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '4.4-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -25,10 +25,10 @@ ext {
 
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.19.0"
-  nettyVersion="4.1.70.Final"
-  slf4jVersion="1.7.32"
-  mockitoVersion='4.0.0'
+  artemisVersion="2.20.0"
+  nettyVersion="4.1.73.Final"
+  slf4jVersion="1.7.35"
+  mockitoVersion='4.3.1'
 }
 
 ext.gitBranchNameOrTimestamp = { branchName ->
@@ -258,13 +258,15 @@ spotbugsMain {
   reportLevel = "high"
   reports {
     xml {
-      enabled = false
+      required.set(false)
     }
     html {
-      enabled = true
+      required.set(true)
+      stylesheet = 'default.xsl'
     }
   }
 }
+
 dependencyCheck  {
   suppressionFiles= [ "https://raw.githubusercontent.com/adaptris/interlok/develop/gradle/owasp-exclude.xml" , "$rootDir/gradle/owasp-exclude.xml" ]
   scanConfigurations = [ "api", "compileClasspath", "runtimeClasspath" ]

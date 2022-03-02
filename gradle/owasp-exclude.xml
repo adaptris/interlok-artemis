@@ -15,5 +15,21 @@
     <packageUrl regex="true">^pkg:maven/org\.jgroups/jgroups@.*$</packageUrl>
     <vulnerabilityName>CWE-300: Channel Accessible by Non-Endpoint ('Man-in-the-Middle')</vulnerabilityName>
   </suppress>
-
+  <suppress>
+     <notes><![CDATA[
+     file name: netty-tcnative-classes-2.0.46.Final.jar
+     - appears to be false positive
+     ]]></notes>
+     <packageUrl regex="true">^pkg:maven/io\.netty/netty\-tcnative\-classes@.*$</packageUrl>
+     <cve>CVE-2014-3488</cve>
+     <cve>CVE-2015-2156</cve>
+     <cve>CVE-2019-16869</cve>
+     <cve>CVE-2019-20444</cve>
+     <cve>CVE-2019-20445</cve>
+     <cve>CVE-2021-21290</cve>
+     <cve>CVE-2021-21295</cve>
+     <cve>CVE-2021-21409</cve>
+     <cve>CVE-2021-37136</cve>
+     <cve>CVE-2021-37137</cve>
+  </suppress>
 </suppressions>
