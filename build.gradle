@@ -104,10 +104,6 @@ configurations {
 
   // INTERLOK-3740 switch from jcraft to com.github.mwiede jsch fork.
   all*.exclude group: 'com.jcraft', module: 'jsch'
-  
-  // Multiple CVE vulnerabilities before 4.x
-  // A few org.apache.activemq dependencies rely on jgroup
-  all*.exclude group: 'org.jgroups', module: 'jgroups'
 }
 
 configurations.all {
@@ -117,7 +113,11 @@ configurations.all {
 dependencies {
   api ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
   api ("com.adaptris:interlok-common:$interlokCoreVersion") { changing= true}
-  api ("org.apache.activemq:artemis-jms-server:$artemisVersion")
+  api ("org.apache.activemq:artemis-jms-server:$artemisVersion") {
+    // Multiple CVE vulnerabilities before 4.x
+    exclude group: "org.jgroups", module: "jgroups"
+  }
+  implementation ("org.jgroups:jgroups:4.2.4.Final")
   api ("org.apache.activemq:artemis-server:$artemisVersion") {
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
@@ -125,7 +125,6 @@ dependencies {
     exclude group: "io.netty"
     exclude group: "org.apache.commons", module: "commons-configuration2"
   }
-  implementation ("org.jgroups:jgroups:4.2.4.Final")
   implementation ("io.netty:netty-buffer:$nettyVersion")
   implementation ("io.netty:netty-common:$nettyVersion")
   implementation ("io.netty:netty-handler:$nettyVersion")
