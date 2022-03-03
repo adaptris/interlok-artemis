@@ -27,7 +27,7 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   artemisVersion="2.20.0"
   nettyVersion="4.1.74.Final"
-  slf4jVersion="1.7.35"
+  slf4jVersion="1.7.36"
   mockitoVersion='4.3.1'
 }
 
