@@ -134,6 +134,9 @@ dependencies {
   implementation ("io.netty:netty-transport-native-kqueue:$nettyVersion")
   implementation ("io.netty:netty-codec:$nettyVersion")
   implementation ("io.netty:netty-codec-http:$nettyVersion")
+  implementation ("io.netty:netty-codec-socks:$nettyVersion")
+  implementation ("io.netty:netty-handler-proxy:$nettyVersion")
+  
   implementation ("org.apache.commons:commons-configuration2:2.8.0")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
