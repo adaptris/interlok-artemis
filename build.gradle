@@ -2,13 +2,13 @@ plugins {
   id 'java-library'
   id 'maven-publish'
   id  "jacoco"
-  id 'com.github.spotbugs' version '5.0.12'
-  id 'org.owasp.dependencycheck' version '7.2.1'
+  id 'com.github.spotbugs' version '5.0.13'
+  id 'org.owasp.dependencycheck' version '7.4.4'
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.6-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '4.6-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.7-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '4.7-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -26,7 +26,7 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   artemisVersion="2.26.0"
-  nettyVersion="4.1.84.Final"
+  nettyVersion="4.1.87.Final"
   slf4jVersion="2.0.3"
   mockitoVersion='4.8.0'
 }
@@ -134,6 +134,9 @@ dependencies {
   implementation ("io.netty:netty-transport-native-kqueue:$nettyVersion")
   implementation ("io.netty:netty-codec:$nettyVersion")
   implementation ("io.netty:netty-codec-http:$nettyVersion")
+  implementation ("io.netty:netty-codec-socks:$nettyVersion")
+  implementation ("io.netty:netty-handler-proxy:$nettyVersion")
+  
   implementation ("org.apache.commons:commons-configuration2:2.8.0")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
