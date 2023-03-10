@@ -28,7 +28,7 @@ ext {
   artemisVersion="2.28.0"
   nettyVersion="4.1.93.Final"
   slf4jVersion="2.0.3"
-  mockitoVersion='4.8.0'
+  mockitoVersion='5.2.0'
 }
 
 ext.gitBranchNameOrTimestamp = { branchName ->
