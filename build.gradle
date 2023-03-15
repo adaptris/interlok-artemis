@@ -117,7 +117,7 @@ dependencies {
     // Multiple CVE vulnerabilities before 4.x
     exclude group: "org.jgroups", module: "jgroups"
   }
-  implementation ("org.jgroups:jgroups:4.2.4.Final")
+  implementation ("org.jgroups:jgroups:5.2.13.Final")
   api ("org.apache.activemq:artemis-server:$artemisVersion") {
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
