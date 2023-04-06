@@ -282,6 +282,7 @@ dependencyCheck  {
   failBuildOnCVSS = 7.0
   analyzers {
     assemblyEnabled=false
+    knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
   }
 }
   // disable spotbugsTests which checks our test code..
