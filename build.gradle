@@ -2,13 +2,13 @@ plugins {
   id 'java-library'
   id 'maven-publish'
   id  "jacoco"
-  id 'com.github.spotbugs' version '5.0.13'
-  id 'org.owasp.dependencycheck' version '7.4.4'
+  id 'com.github.spotbugs' version '5.0.14'
+  id 'org.owasp.dependencycheck' version '8.2.1'
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.7-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '4.7-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.8-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '4.8-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -25,7 +25,7 @@ ext {
 
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.26.0"
+  artemisVersion="2.28.0"
   nettyVersion="4.1.87.Final"
   slf4jVersion="2.0.3"
   mockitoVersion='4.8.0'
@@ -137,7 +137,7 @@ dependencies {
   implementation ("io.netty:netty-codec-socks:$nettyVersion")
   implementation ("io.netty:netty-handler-proxy:$nettyVersion")
   
-  implementation ("org.apache.commons:commons-configuration2:2.8.0")
+  implementation ("org.apache.commons:commons-configuration2:2.9.0")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
@@ -282,6 +282,7 @@ dependencyCheck  {
   failBuildOnCVSS = 7.0
   analyzers {
     assemblyEnabled=false
+    knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
   }
 }
   // disable spotbugsTests which checks our test code..
