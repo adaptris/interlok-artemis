@@ -1,12 +1,12 @@
 /*
  * Copyright 2015 Adaptris Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,28 +31,28 @@ import com.adaptris.core.management.ManagementComponent;
 
 /**
  * Management component that starts up an embedded ActiveMQ broker.
- * 
+ *
  * @author amcgrath.
  *
  */
 public class ArtemisServerComponent implements ManagementComponent {
-  
+
   private transient Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
   /**
    * The property key that defines the artemis configuration file.
-   * 
+   *
    */
   public static final String ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY = "activemq.config.filename";
-  
+
   private static final String DEFAULT_ARTEMIS_CONFIG = "broker.xml"; // should be on the classpath
-  
+
   private transient ClassLoader classLoader;
-  
+
   private transient Properties properties;
-  
+
   private transient volatile EmbeddedActiveMQ embeddedArtemis;
-  
+
   @Override
   public void setClassLoader(ClassLoader classLoader) {
     this.classLoader = classLoader;
@@ -69,55 +69,54 @@ public class ArtemisServerComponent implements ManagementComponent {
     if (classLoader == null) {
       classLoader = Thread.currentThread().getContextClassLoader();
     }
-    
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          log.debug("Creating Apache Artemis Broker");
-          Thread.currentThread().setContextClassLoader(classLoader);
-          
-          String brokerConfigFileName = null;
-          InputStream brokerXmlStream = null;
-          if(properties.getProperty(ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY) != null) {
-            brokerXmlStream = this.getClass().getClassLoader().getResourceAsStream(properties.getProperty(ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY));
-            if(brokerXmlStream != null) {// we have a broker.xml file to apply to the broker.
-              brokerConfigFileName = properties.getProperty(ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY);
-              log.info("Found Artemis configuration file {}.  Starting broker.", brokerConfigFileName);
-            }
-            else
-              log.warn("Broker config file {} not found on the classpath, starting the broker with minimal configuration.", properties.getProperty(ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY));
+
+    new Thread(() -> {
+      try {
+        log.debug("Creating Apache Artemis Broker");
+        Thread.currentThread().setContextClassLoader(classLoader);
+
+        String brokerConfigFileName = null;
+        InputStream brokerXmlStream = null;
+        if (properties.getProperty(ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY) != null) {
+          brokerXmlStream = this.getClass().getClassLoader().getResourceAsStream(properties.getProperty(ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY));
+          if (brokerXmlStream != null) {// we have a broker.xml file to apply to the broker.
+            brokerConfigFileName = properties.getProperty(ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY);
+            log.info("Found Artemis configuration file {}.  Starting broker.", brokerConfigFileName);
           } else {
-            brokerXmlStream = this.getClass().getClassLoader().getResourceAsStream(DEFAULT_ARTEMIS_CONFIG);
-            if(brokerXmlStream != null) { // we have a broker.xml file to apply to the broker.
-              brokerConfigFileName = DEFAULT_ARTEMIS_CONFIG;
-              log.info("Found Artemis configuration file {}.  Starting broker.", brokerConfigFileName);
-            }
-            else
-              log.warn("Broker config file {} not found on the classpath, starting the broker with minimal configuration.", DEFAULT_ARTEMIS_CONFIG);
+            log.warn("Broker config file {} not found on the classpath, starting the broker with minimal configuration.",
+                properties.getProperty(ARTEMIS_BROKER_CONFIG_FILE_NAME_KEY));
           }
-          
-          if(brokerConfigFileName != null) {
-            createConfiguredBroker(embeddedArtemis, brokerConfigFileName);
-          } else { // minimal configuration
-            log.info("Creating minimal Artemis broker, without security.");
-            createMinimalBroker(embeddedArtemis);
+        } else {
+          brokerXmlStream = this.getClass().getClassLoader().getResourceAsStream(DEFAULT_ARTEMIS_CONFIG);
+          if (brokerXmlStream != null) { // we have a broker.xml file to apply to the broker.
+            brokerConfigFileName = DEFAULT_ARTEMIS_CONFIG;
+            log.info("Found Artemis configuration file {}.  Starting broker.", brokerConfigFileName);
+          } else {
+            log.warn("Broker config file {} not found on the classpath, starting the broker with minimal configuration.",
+                DEFAULT_ARTEMIS_CONFIG);
           }
-          
-          embeddedArtemis.start();
-          embeddedArtemis.waitClusterForming(1l, TimeUnit.MINUTES, 3, 1);
-          
-          log.debug("Apache Artemis broker now running.");
-        } catch (Throwable ex) {
-          log.error("Could not start the Apache Artemis broker", ex);
         }
+
+        if (brokerConfigFileName != null) {
+          createConfiguredBroker(embeddedArtemis, brokerConfigFileName);
+        } else { // minimal configuration
+          log.info("Creating minimal Artemis broker, without security.");
+          createMinimalBroker(embeddedArtemis);
+        }
+
+        embeddedArtemis.start();
+        embeddedArtemis.waitClusterForming(1l, TimeUnit.MINUTES, 3, 1);
+
+        log.debug("Apache Artemis broker now running.");
+      } catch (Throwable ex) {
+        log.error("Could not start the Apache Artemis broker", ex);
       }
     }).start();
-    
+
   }
-  
+
   /**
-   * 
+   *
    * @return
    * @throws Exception
    */
@@ -130,21 +129,21 @@ public class ArtemisServerComponent implements ManagementComponent {
 
     broker.setConfiguration(config);
   }
-  
+
   private void createConfiguredBroker(EmbeddedActiveMQ broker, String configFileName) throws Exception {
     broker.setConfigResourcePath(configFileName);
   }
 
   @Override
   public void stop() throws Exception {
-    
-      if (embeddedArtemis != null) {
-        try {
-          embeddedArtemis.stop();
-        } catch (Throwable t) {
-          // silently
-        }
+
+    if (embeddedArtemis != null) {
+      try {
+        embeddedArtemis.stop();
+      } catch (Throwable t) {
+        // silently
       }
+    }
     log.debug(this.getClass().getSimpleName() + " Stopped");
   }
 
@@ -165,13 +164,11 @@ public class ArtemisServerComponent implements ManagementComponent {
   }
 
   private boolean brokerStarted() {
-    if(embeddedArtemis == null)
+    if (embeddedArtemis == null || embeddedArtemis.getActiveMQServer() == null) {
       return false;
-    else {
-      if(embeddedArtemis.getActiveMQServer() == null)
-        return false;
-      else
-        return embeddedArtemis.getActiveMQServer().isActive();
+    } else {
+      return embeddedArtemis.getActiveMQServer().isActive();
     }
   }
+
 }
