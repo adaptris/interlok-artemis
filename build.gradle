@@ -284,16 +284,18 @@ dependencyCheck  {
     knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
   }
 }
-  // disable spotbugsTests which checks our test code..
+
+test {
+  useJUnitPlatform()
+}
+
+// disable spotbugsTests which checks our test code..
 spotbugsTest.enabled = false
-
-
 
 task deleteGeneratedFiles(type: Delete) {
   delete 'activemq-data'
   delete 'data'
 }
-
 
 javadoc.dependsOn offlinePackageList
 check.dependsOn jacocoTestReport
