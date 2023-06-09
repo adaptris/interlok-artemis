@@ -27,7 +27,7 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   artemisVersion="2.28.0"
   nettyVersion="4.1.93.Final"
-  slf4jVersion="2.0.3"
+  slf4jVersion="2.0.7"
   mockitoVersion='5.2.0'
 }
 
@@ -151,7 +151,6 @@ dependencies {
 
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-common:$interlokCoreVersion:javadoc@jar") { changing= true}
-
 }
 
 jar {
@@ -213,10 +212,10 @@ javadoc {
 }
 
 jacocoTestReport {
-    reports {
-        xml.required= true
-        html.required= true
-    }
+  reports {
+    xml.required= true
+    html.required= true
+  }
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
