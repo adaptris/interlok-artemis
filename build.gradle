@@ -118,12 +118,14 @@ dependencies {
     exclude group: "org.jgroups", module: "jgroups"
   }
   implementation ("org.jgroups:jgroups:5.2.16.Final")
+  implementation ("com.google.guava:guava:32.1.1-jre")
   api ("org.apache.activemq:artemis-server:$artemisVersion") {
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
     // dependabot will sort us out...
     exclude group: "io.netty"
     exclude group: "org.apache.commons", module: "commons-configuration2"
+    exclude group: "com.google.guava", module: "guava"
   }
   implementation ("io.netty:netty-buffer:$nettyVersion")
   implementation ("io.netty:netty-common:$nettyVersion")
