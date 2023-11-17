@@ -1,12 +1,12 @@
 /*
  * Copyright 2015 Adaptris Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,8 @@
 package com.adaptris.mgmt.artemis;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -25,9 +26,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.adaptris.core.BaseCase;
+import com.adaptris.interlok.junit.scaffolding.BaseCase;
 
 public class ArtemisServerComponentTest {
 
@@ -46,8 +47,7 @@ public class ArtemisServerComponentTest {
 
     try {
       TEST_PROPERTIES.load(in);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
@@ -59,18 +59,16 @@ public class ArtemisServerComponentTest {
   @Test
   public void testDefaultStart() throws Exception {
     if (!skipTests()) {
-      ArtemisServerComponent comp = new ArtemisServerComponent();      
+      ArtemisServerComponent comp = new ArtemisServerComponent();
       comp.init(new Properties());
       comp.setClassLoader(Thread.currentThread().getContextClassLoader());
       try {
         comp.start();
         Thread.sleep(1000);
         comp.waitForStart(60000);
-      }
-      catch (InterruptedException | TimeoutException e) {
+      } catch (InterruptedException | TimeoutException e) {
         System.err.println("Failed to start");
-      }
-      finally {
+      } finally {
         comp.stop();
         comp.destroy();
       }
@@ -79,38 +77,34 @@ public class ArtemisServerComponentTest {
 
   @Test
   public void testStart_ConfiguredArtemis_XML() throws Exception {
-    if (!skipTests()) {
-      ArtemisServerComponent comp = new ArtemisServerComponent();
-      comp.init(createBootProperties());
-      try {
-        comp.start();
-        Thread.sleep(1000);
-        comp.waitForStart(60000);
-      }
-      catch (InterruptedException | TimeoutException e) {
-        System.err.println("Failed to start");
-      }
-      finally {
-        comp.stop();
-        comp.destroy();
-      }
+    assumeFalse(skipTests());
+    ArtemisServerComponent comp = new ArtemisServerComponent();
+    comp.init(createBootProperties());
+    try {
+      comp.start();
+      Thread.sleep(1000);
+      comp.waitForStart(60000);
+    } catch (InterruptedException | TimeoutException e) {
+      System.err.println("Failed to start");
+    } finally {
+      comp.stop();
+      comp.destroy();
     }
   }
-  
+
   @Test
   public void testWaitForStartTimesOut() throws Exception {
-    if (!skipTests()) {
-      ArtemisServerComponent comp = new ArtemisServerComponent();
-      try {
-        comp.waitForStart(50);
-        fail("Artemis server not initialized, so should fail after the 50 milliseconds of timeout.");
-      } catch (TimeoutException ex) {
-        // expected.
-      } finally {
-        comp.stop();
-      }
-      
+    assumeFalse(skipTests());
+    ArtemisServerComponent comp = new ArtemisServerComponent();
+    try {
+      comp.waitForStart(50);
+      fail("Artemis server not initialized, so should fail after the 50 milliseconds of timeout.");
+    } catch (TimeoutException ex) {
+      // expected.
+    } finally {
+      comp.stop();
     }
+
   }
 
   private Properties createBootProperties() {
