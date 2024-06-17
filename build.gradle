@@ -26,7 +26,7 @@ ext {
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
   artemisVersion="2.33.0"
-  nettyVersion="4.1.110.Final"
+  nettyVersion="4.1.111.Final"
   slf4jVersion="2.0.13"
   mockitoVersion='5.2.0'
 }
