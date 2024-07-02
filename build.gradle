@@ -2,9 +2,9 @@ plugins {
   id "java-library"
   id "maven-publish"
   id "jacoco"
-  id "com.github.spotbugs" version "6.0.6"
-  id "org.sonarqube" version "4.4.1.3373"
-  id "org.owasp.dependencycheck" version "9.0.8"
+  id "com.github.spotbugs" version "6.0.14"
+  id "org.sonarqube" version "5.0.0.4638"
+  id "org.owasp.dependencycheck" version "9.0.10"
 }
 
 ext {
@@ -26,9 +26,9 @@ ext {
 
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.31.2"
-  nettyVersion="4.1.104.Final"
-  slf4jVersion="2.0.11"
+  artemisVersion="2.33.0"
+  nettyVersion="4.1.109.Final"
+  slf4jVersion="2.0.13"
   mockitoVersion='5.2.0'
 }
 
@@ -126,8 +126,8 @@ dependencies {
     // Multiple CVE vulnerabilities before 4.x
     exclude group: "org.jgroups", module: "jgroups"
   }
-  implementation ("org.jgroups:jgroups:5.3.1.Final")
-  implementation ("com.google.guava:guava:33.0.0-jre")
+  implementation ("org.jgroups:jgroups:5.3.6.Final")
+  implementation ("com.google.guava:guava:33.2.0-jre")
   api ("org.apache.activemq:artemis-server:$artemisVersion") {
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
@@ -148,11 +148,11 @@ dependencies {
   implementation ("io.netty:netty-codec-socks:$nettyVersion")
   implementation ("io.netty:netty-handler-proxy:$nettyVersion")
   
-  implementation ("org.apache.commons:commons-configuration2:2.9.0")
+  implementation ("org.apache.commons:commons-configuration2:2.10.1")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-  testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.1")
+  testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.2")
   testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
   testImplementation ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true }
   testImplementation ("org.mockito:mockito-core:$mockitoVersion")
