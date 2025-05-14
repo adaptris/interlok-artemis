@@ -296,7 +296,7 @@ dependencyCheck  {
   }
   analyzers {
     assemblyEnabled=false
-    knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
+    
   }
 }
 
