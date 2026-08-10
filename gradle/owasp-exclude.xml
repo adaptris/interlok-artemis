@@ -51,4 +51,15 @@
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty(\.http2|\.websocket)?/.+@10\.0\.26$</packageUrl>
     <cve>CVE-2026-2332</cve>
-  </suppress></suppressions>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      Artemis is pinned to 2.41.0 for this Java 17 release line. No compatible patched update is
+      currently available for these CVEs without broader upgrade impact; review on next Artemis update.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/artemis-.+@2\.41\.0$</packageUrl>
+    <cve>CVE-2026-27446</cve>
+    <cve>CVE-2026-32642</cve>
+    <cve>CVE-2026-40914</cve>
+  </suppress>
+</suppressions>
