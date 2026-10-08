@@ -17,6 +17,7 @@
 package com.adaptris.mgmt.artemis;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
@@ -105,6 +106,14 @@ public class ArtemisServerComponentTest {
       comp.stop();
     }
 
+  }
+
+  @Test
+  public void testWaitForStartWhenArtemisServerIsNotStarted() throws Exception {
+    ArtemisServerComponent comp = new ArtemisServerComponent();
+    comp.init(new Properties());
+
+    assertThrows(TimeoutException.class, () -> comp.waitForStart(50));
   }
 
   private Properties createBootProperties() {
