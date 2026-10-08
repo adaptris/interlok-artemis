@@ -26,8 +26,8 @@ ext {
 
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  artemisVersion="2.41.0"
-  nettyVersion="4.2.18.Final"
+  artemisVersion="2.57.0"
+  nettyVersion="4.2.19.Final"
   slf4jVersion="2.0.20"
   mockitoVersion='5.2.0'
 }
@@ -127,11 +127,10 @@ dependencies {
     exclude group: "org.jgroups", module: "jgroups"
   }
   implementation ("org.jgroups:jgroups:5.4.6.Final")
-  implementation ("com.google.guava:guava:33.7.1-jre")
+  implementation ("com.google.guava:guava:33.7.2-jre")
+  implementation ("io.micrometer:micrometer-core:1.17.1")
   api ("org.apache.activemq:artemis-server:$artemisVersion") {
-    // 4.1.43.Final has a HTTP request smuggler vuln, so
-    // we exclude netty, and force the fixed version
-    // dependabot will sort us out...
+    // Exclude Artemis's Netty modules and use the fixed 4.2 line below.
     exclude group: "io.netty"
     exclude group: "org.apache.commons", module: "commons-configuration2"
     exclude group: "com.google.guava", module: "guava"
@@ -147,6 +146,7 @@ dependencies {
   implementation ("io.netty:netty-codec-http:$nettyVersion")
   implementation ("io.netty:netty-codec-socks:$nettyVersion")
   implementation ("io.netty:netty-handler-proxy:$nettyVersion")
+  implementation ("io.netty:netty-codec-haproxy:$nettyVersion")
   
   api ("commons-beanutils:commons-beanutils:1.11.0")
   implementation ("org.apache.commons:commons-configuration2:2.15.0")
