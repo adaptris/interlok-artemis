@@ -128,7 +128,7 @@ dependencies {
   }
   implementation ("org.jgroups:jgroups:5.4.6.Final")
   implementation ("com.google.guava:guava:33.7.2-jre")
-  implementation ("io.micrometer:micrometer-core:1.17.1")
+  implementation ("io.micrometer:micrometer-core:1.17.2")
   api ("org.apache.activemq:artemis-server:$artemisVersion") {
     // Exclude Artemis's Netty modules and use the fixed 4.2 line below.
     exclude group: "io.netty"
