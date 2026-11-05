@@ -44,7 +44,8 @@
     <cve>CVE-2026-40974</cve>
     <cve>CVE-2026-40975</cve>
     <cve>CVE-2026-40977</cve>
-  </suppress>  <suppress>
+  </suppress>
+  <suppress>
     <notes><![CDATA[
       Jetty 10.0.26 is the newest Jetty 10 release available in Maven Central. Remediation for this CVE
       requires moving off the Jetty 10 line, which is outside the current Java 17 / Jetty 10 constraints.
@@ -54,12 +55,19 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
-      Artemis is pinned to 2.41.0 for this Java 17 release line. No compatible patched update is
-      currently available for these CVEs without broader upgrade impact; review on next Artemis update.
+      Advisories: https://github.com/advisories/GHSA-xw83-8gp3-pg5q (CVE-2026-14683)
+      and https://github.com/advisories/GHSA-pcmr-4mmx-225x (CVE-2026-14686).
+      Both affect HdrHistogram through 2.2.2, pulled in by micrometer-core.
+      As of 2026-11-05, Maven Central lists 2.2.2 as the latest stable release:
+      https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/maven-metadata.xml
+      No patched minor/patch release within major 2 is available; downgrading would remain affected.
+      Accepted, not fixed: locally supplied compressed histogram data may exhaust memory, and
+      crafted recorded values may corrupt histogram measurements. The advisories are disputed,
+      but these risks remain accepted; do not deserialize untrusted histograms or use measurements
+      as a security boundary. Revisit when a patched stable 2.x release is published.
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/artemis-.+@2\.41\.0$</packageUrl>
-    <cve>CVE-2026-27446</cve>
-    <cve>CVE-2026-32642</cve>
-    <cve>CVE-2026-40914</cve>
+    <packageUrl>pkg:maven/org.hdrhistogram/HdrHistogram@2.2.2</packageUrl>
+    <cve>CVE-2026-14683</cve>
+    <cve>CVE-2026-14686</cve>
   </suppress>
 </suppressions>
